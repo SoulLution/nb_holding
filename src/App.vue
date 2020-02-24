@@ -256,7 +256,7 @@
   $yellow_bg: #FCF6EC;
   $yellow_l: #69552E;
   $yellow_d: #937643;
-  $yellow_092: rgba(200, 165, 100, 0.92);
+  $yellow_092: rgba(200, 165, 100, 1);
   $yellow_080: rgba(187, 162, 118, 0.8);
 
   @font-face {
@@ -508,7 +508,7 @@
       &:before, &:after{
         content: "";
         position: absolute;
-        top: -12vw;
+        top: -12.5vw;
         left: 0;
         z-index: 1;
         border-bottom: 12.5vw solid $yellow_bg;
@@ -620,7 +620,7 @@
       &:before, &:after{
         content: "";
         position: absolute;
-        top: -12vw;
+        top: -12.5vw;
         left: 0;
         z-index: 1;
         border-bottom: 12.5vw solid $yellow_092;
@@ -702,7 +702,7 @@
     &:before, &:after{
       content: "";
       position: absolute;
-      top: -12vw;
+      top: -12.5vw;
       left: 0;
       z-index: 1;
       border-bottom: 12.5vw solid $yellow_bg;
@@ -750,7 +750,9 @@
     align-items: flex-start;
   }
   .body-projects{
-    
+    &:before, &:after{
+      top: 12vw;
+    }
     &-title{
       font-size: 24px;
     }
@@ -838,6 +840,9 @@
     }
   }
   .body-form{
+    &:before, &:after{
+      top: 12vw;
+    }
     &-title{
       font-size: 24px;
     }
@@ -854,6 +859,9 @@
     }
   }
   .footer{
+    &:before, &:after{
+      top: 12vw;
+    }
     &-title{
       font-size: 24px;
     }
