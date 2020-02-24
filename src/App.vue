@@ -66,17 +66,17 @@
 
       </div>
 
-      <form class="body-form">
+      <form class="body-form" method="POST" @submint.prevent="sendEmail">
         <div class="body-form-title">Отправить запрос на сотрудничество </div>
 
         <div class="body-form-body">
           <label class="body-form-body-input" v-for="(input, i) in inputs" :for="'input-'+i">
             <div class="body-form-body-input-name" :class="{'active': input.focus || input.data}">{{input.name}}</div>
-            <input :id="'input-'+i" @focus="input.focus = true" @blur="input.focus = false" v-model="input.data" v-if="i !== inputs.length-1">
-            <textarea :id="'input-'+i" @focus="input.focus = true" @blur="input.focus = false" v-model="input.data" v-else></textarea>
+            <input :name="input.sub" :id="'input-'+i" @focus="input.focus = true" @blur="input.focus = false" v-model="input.data" v-if="i !== inputs.length-1" required autocomplete="off">
+            <textarea :name="input.sub" :id="'input-'+i" @focus="input.focus = true" @blur="input.focus = false" v-model="input.data" v-else required autocomplete="off"></textarea>
           </label>
         </div>
-        <input class="body-form-button" type="submit" value="Получить консультацию">
+        <input class="body-form-button" type="submit" value="Получить консультацию" @click="sendEmail">
       </form>
 
     </div>
@@ -85,7 +85,7 @@
       <div class="footer-title">Мы всегда рады сотрудничеству!</div>
       <a href="tel:87070000092" class="footer-phone">8 707 000 00 92</a>
       <a href="geo:43.2593064,76.9297241,15" class="footer-address">г. Алматы, Достык 97 Б, 278 офис </a>
-      <div class="footer-copy">help@akh.kz</div>
+      <div class="footer-copy">help@nb-holding.kz</div>
     </div>
   </div>
 </template>
@@ -100,16 +100,19 @@
         inputs: [
           {
             name: 'Имя',
+            sub: 'name',
             data: '',
             focus: false
           },
           {
-            name: 'Компания',
+            name: 'Email',
+            sub: 'Email',
             data: '',
             focus: false
           },
           {
             name: 'Напишите свой вопрос',
+            sub: 'message',
             data: '',
             focus: false
           } 
@@ -168,6 +171,29 @@
       setInterval(()=>this.switchPage(),10000)
     },
     methods:{
+      sendEmail(e){
+        e.preventDefault();
+        let data = {_replyto: 'help@nb-holding.kz'}
+        for(let i = 0; i < this.inputs.length; i++)
+          data[this.inputs[i].sub] = this.inputs[i].data
+        this.$axios
+         .post(
+              "https://formspree.io/mzbgbolj",
+              data
+         )
+         .then(res => {
+            for(let i = 0; i < this.inputs.length; i++)
+              this.inputs[i].data = ''
+         });
+         return false
+       },
+      toFormData: function(obj) {
+        let formData = new FormData();
+        for(let key in obj) {
+            formData.append(key, obj[key]);
+        }
+        return formData;
+      },
       switchPage(){
         if(this.page+1 >= this.pages)
           this.page = 0
@@ -568,7 +594,7 @@
       &-button{
         border: unset;
         width: 312px;
-        padding: 31px 60px;
+        padding: 31px 0;
         background: $yellow_d;
         border-radius: 25px;
         color: $yellow_l;
