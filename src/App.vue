@@ -171,10 +171,10 @@
     mounted(){
       let doc = document.getElementsByClassName('body-developer')[0]
       doc.ontouchstart = e => {
-        this.touch = e.touches[0].clientX
+        this.touch = e.originalEvent.touches[0].clientX
       }
       doc.ontouchend = e => {
-        let x = e.changedTouches[0].clientX, index = 0
+        let x = e.originalEvent.changedTouches[0].clientX, index = 0
 
         if(this.touch - x > (document.body.clientWidth/2))
           index = 1
