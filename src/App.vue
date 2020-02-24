@@ -169,11 +169,10 @@
       }
     },
     mounted(){
-      let doc = document.getElementsByClassName('body-developer')[0]
-      doc.addEventListener('touchstart', e => {
+      doccument.body.ontouchstart = e => {
         this.touch = e.touches[0].clientX
-      }, false)
-      doc.addEventListener('touchend', e => {
+      }
+      doccument.body.ontouchend = e => {
         let x = e.changedTouches[0].clientX, index = 0
 
         if(this.touch - x > (document.body.clientWidth/2))
@@ -184,7 +183,7 @@
         if(index)
           this.switchPage(index)
         this.touch = 0;
-      }, false)
+      }
     }, 
     created(){
       setInterval(()=>this.switchPage(1),10000)
