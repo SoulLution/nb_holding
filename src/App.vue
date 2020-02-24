@@ -659,6 +659,8 @@
 @media screen and (max-width: 670px){
   .body-projects-item-poject-name{
     width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
   .body-projects{
     
