@@ -751,7 +751,7 @@
   }
   .body-projects{
     &:before, &:after{
-      top: 12vw;
+      top: -12vw;
     }
     &-title{
       font-size: 24px;
@@ -841,7 +841,7 @@
   }
   .body-form{
     &:before, &:after{
-      top: 12vw;
+      top: -12vw;
     }
     &-title{
       font-size: 24px;
@@ -860,7 +860,7 @@
   }
   .footer{
     &:before, &:after{
-      top: 12vw;
+      top: -12vw;
     }
     &-title{
       font-size: 24px;
