@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-      <div class="body-developer">
+      <div class="body-developer" @mousedown="startTouch" @mouseup="endTouch">
         <div class="body-developer-title">О застройщике</div>
         <div class="body-developer-about">Осуществляем полный цикл работ от строительства до продажи квартир</div>
 
@@ -174,12 +174,12 @@
         this.touch = e.touches[0].clientX
       }
       doc.ontouchend = e => {
-        let x = e.changedTouches[0].clientX - (document.body.clientWidth/2), index = 0
-        alert(x)
-        if(this.touch < x)
-          index = -1
-        else if(this.touch > x)
+        let x = e.changedTouches[0].clientX, index = 0
+
+        if(this.touch - x > (document.body.clientWidth/2))
           index = 1
+        else if(x -this.touch > (document.body.clientWidth/2))
+          index = -1
 
         if(index)
           this.switchPage(index)
@@ -194,12 +194,12 @@
         this.touch = e.touches[0].clientX;
       },
       endTouch(e){
-        e.preventDefault();
-        let x = e.changedTouches[0].clientX - (document.body.clientWidth/2), index = 0
-        if(this.touch < x)
-          index = -1
-        else if(this.touch > x)
+        let x = e.changedTouches[0].clientX, index = 0
+
+        if(this.touch - x > (document.body.clientWidth/2))
           index = 1
+        else if(x -this.touch > (document.body.clientWidth/2))
+          index = -1
 
         if(index)
           this.switchPage(index)
