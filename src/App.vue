@@ -421,7 +421,7 @@
       &:before, &:after{
         content: "";
         position: absolute;
-        top: -12.5vw;
+        top: -12vw;
         left: 0;
         z-index: 1;
         border-bottom: 12.5vw solid $yellow_bg;
@@ -533,7 +533,7 @@
       &:before, &:after{
         content: "";
         position: absolute;
-        top: -12.5vw;
+        top: -12vw;
         left: 0;
         z-index: 1;
         border-bottom: 12.5vw solid $yellow_092;
@@ -615,7 +615,7 @@
     &:before, &:after{
       content: "";
       position: absolute;
-      top: -12.5vw;
+      top: -12vw;
       left: 0;
       z-index: 1;
       border-bottom: 12.5vw solid $yellow_bg;
@@ -657,8 +657,14 @@
   }
 }
 @media screen and (max-width: 670px){
-  .body-projects-title{
-    font-size: 24px;
+  .body-projects{
+    &-item-project-name{
+      width: 100%;
+      margin: 10px 0;
+    }
+    &-title{
+      font-size: 24px;
+    }
   }
   .body-developer{
     padding: 5% 0;
