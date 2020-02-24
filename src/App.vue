@@ -174,8 +174,8 @@
         this.touch = e.touches[0].clientX
       }
       doc.ontouchend = e => {
-        e.preventDefault();
         let x = e.changedTouches[0].clientX - (document.body.clientWidth/2), index = 0
+        alert(x)
         if(this.touch < x)
           index = -1
         else if(this.touch > x)
