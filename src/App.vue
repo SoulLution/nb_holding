@@ -1,5 +1,13 @@
 <template>
   <div class="main">
+    <div class="popup" v-if="popup">
+      <div class="popup-bg" @click="type !== undefined ? popup = false : ''"></div>
+      <div class="popup-content">
+        <div class="popup-content-message" :class="{'success': type === true,'error': type === false,'await': type === undefined}">{{message}}</div>
+        <div class="popup-content-button" @click="type !== undefined ? popup = false : ''">Закрыть</div>
+      </div>
+    </div>
+
     <div class="header">
       <img src="/static/first.png">
       <div class="header-shadow"></div>
@@ -98,6 +106,9 @@
         touch: 0,
         page: 0,
         pages: 3,
+        popup: false,
+        type: undefined,
+        message: '',
         inputs: [
           {
             name: 'Имя',
@@ -189,8 +200,19 @@
       setInterval(()=>this.switchPage(1),10000)
     },
     methods:{
+      popupMessage(e){
+        this.type = e
+        if(e === false)
+          this.message = 'Ой! Что-то пошло не так, попробуйте повторить запрос позже.'
+        else if(e === true)
+          this.message = 'Ваш запрос обрабатывается, в ближайшее время с вами свяжется консультант.'
+        else
+          this.message = 'Пожалуйста, подождите, пока ваш запрос отправится.'
+        this.popup = true
+      },
       sendEmail(e){
         e.preventDefault();
+        this.popupMessage(undefined)
         let data = {_replyto: 'help@nb-holding.kz'}
         for(let i = 0; i < this.inputs.length; i++)
           data[this.inputs[i].sub] = this.inputs[i].data
@@ -202,15 +224,12 @@
          .then(res => {
             for(let i = 0; i < this.inputs.length; i++)
               this.inputs[i].data = ''
-         });
-         return false
-       },
-      toFormData: function(obj) {
-        let formData = new FormData();
-        for(let key in obj) {
-            formData.append(key, obj[key]);
-        }
-        return formData;
+            this.popupMessage(true)
+         })
+         .catch(err => {
+            this.popupMessage(false)
+         })
+       return false
       },
       switchPage(index){
         if(this.page+index >= this.pages)
@@ -282,6 +301,54 @@
   *::-webkit-scrollbar {
     // background-color: $font_l;
     width: 5px;
+  }
+
+  .popup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    &-bg{
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background-color: #00000080;
+    }
+    &-content{
+      border-radius: 10px;
+      background-color: $white;
+      width: 80%;
+      padding: 2.5%;
+      max-width: 400px;
+      &-message{
+        color: $black;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 20px;
+        margin-bottom: 5%;
+        &.success{
+          color: #00ca1c;
+        }
+        &.error{
+          color: #ff2b2b;
+        }
+        &.await{
+          color: #888888;
+        }
+      }
+      &-button{
+        color: $black;
+        border: 1px solid $black;
+        border-radius: 50px;
+        cursor: pointer;
+        width: auto;
+        padding: 12px 32px;
+      }
+    }
   }
 
   .main{
