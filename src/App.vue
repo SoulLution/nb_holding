@@ -173,10 +173,10 @@
 
       let doc = document.getElementsByClassName('body-developer')[0]
 
-      doc.touchstart = e => {
+      doc.ontouchstart = e => {
         this.touch = e.touches[0].clientX
       }
-      doc.touchend = e => {
+      doc.ontouchend = e => {
         e.preventDefault();
         let x = e.changedTouches[0].clientX - (document.body.clientWidth/2), index = 0
         if(this.touch < x)
