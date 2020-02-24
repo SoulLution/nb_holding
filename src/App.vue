@@ -170,11 +170,11 @@
     },
     mounted(){
       let doc = document.getElementsByClassName('body-developer')[0]
-      doc.ontouchstart = e => {
-        this.touch = e.originalEvent.touches[0].clientX
-      }
-      doc.ontouchend = e => {
-        let x = e.originalEvent.changedTouches[0].clientX, index = 0
+      doc.addEventListener('touchstart', e => {
+        this.touch = e.touches[0].clientX
+      }, false)
+      doc.addEventListener('touchend', e => {
+        let x = e.changedTouches[0].clientX, index = 0
 
         if(this.touch - x > (document.body.clientWidth/2))
           index = 1
@@ -184,7 +184,7 @@
         if(index)
           this.switchPage(index)
         this.touch = 0;
-      }
+      }, false)
     }, 
     created(){
       setInterval(()=>this.switchPage(1),10000)
