@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-      <div class="body-developer">
+      <div class="body-developer" @touchstart="startTouch"  @touchend="endTouch">
         <div class="body-developer-title">О застройщике</div>
         <div class="body-developer-about">Осуществляем полный цикл работ от строительства до продажи квартир</div>
 
@@ -95,6 +95,7 @@
   export default Vue.extend({
     data: () => {
       return {
+        touch: 0,
         page: 0,
         pages: 3,
         inputs: [
@@ -168,9 +169,24 @@
       }
     },
     created(){
-      setInterval(()=>this.switchPage(),10000)
+      setInterval(()=>this.switchPage(1),10000)
     },
     methods:{
+      startTouch(e){
+        this.touch = e.touches[0].clientX;
+      },
+      endTouch(e){
+        e.preventDefault();
+        let x = e.changedTouches[0].clientX - (document.body.clientWidth/2), index = 0
+        if(this.touch < x)
+          index = -1
+        else if(this.touch > x)
+          index = 1
+
+        if(index)
+          this.switchPage(index)
+        this.touch = 0;
+      },
       sendEmail(e){
         e.preventDefault();
         let data = {_replyto: 'help@nb-holding.kz'}
@@ -194,11 +210,13 @@
         }
         return formData;
       },
-      switchPage(){
-        if(this.page+1 >= this.pages)
+      switchPage(index){
+        if(this.page+index >= this.pages)
           this.page = 0
+        else if(this.page+index < 0)
+          this.page = this.pages-1
         else
-          this.page++
+          this.page += index
       }
     }
   });
@@ -592,19 +610,19 @@
         }
       }
       &-button{
-        border: unset;
+        border: unset !important;
         width: 312px;
         padding: 31px 0;
-        background: $yellow_d;
+        background-color: $yellow_d !important;
         border-radius: 25px;
-        color: $yellow_l;
+        color: $yellow_l !important;
         font-weight: 500;
         font-size: 18px;
         line-height: 21px;
         cursor: pointer; 
         transition: 0.1s;
         &:hover{
-          color: $white;
+          color: $white !important;
         }
       }
     }
