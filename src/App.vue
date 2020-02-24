@@ -461,7 +461,7 @@
             width: 100%;
           }
           &-name{
-            margin-left: 5%;
+            margin: 5%;
             width: 33%;
             text-align: left;
             font-weight: 500;
@@ -657,11 +657,11 @@
   }
 }
 @media screen and (max-width: 670px){
+  .body-projects-item-poject-name{
+    width: 100%;
+  }
   .body-projects{
-    &-item-project-name{
-      width: 100%;
-      margin: 10px 0;
-    }
+    
     &-title{
       font-size: 24px;
     }
