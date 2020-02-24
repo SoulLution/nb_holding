@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-      <div class="body-developer" @touchstart="startTouch"  @touchend="endTouch">
+      <div class="body-developer">
         <div class="body-developer-title">О застройщике</div>
         <div class="body-developer-about">Осуществляем полный цикл работ от строительства до продажи квартир</div>
 
@@ -168,11 +168,8 @@
         }
       }
     },
-    created(){
-      setInterval(()=>this.switchPage(1),10000)
-
+    mounted(){
       let doc = document.getElementsByClassName('body-developer')[0]
-
       doc.ontouchstart = e => {
         this.touch = e.touches[0].clientX
       }
@@ -188,6 +185,9 @@
           this.switchPage(index)
         this.touch = 0;
       }
+    }, 
+    created(){
+      setInterval(()=>this.switchPage(1),10000)
     },
     methods:{
       startTouch(e){
