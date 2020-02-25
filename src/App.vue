@@ -8,8 +8,8 @@
       </div>
     </div>
 
-    <div class="header">
-      <img src="/static/first.png">
+    <div class="header" ref="section-0">
+      <img src="/static/first.png" style="display: none">
       <div class="header-shadow"></div>
       <div class="header-down"></div>
     </div>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="body">
-      <div class="body-abouter">
+      <div class="body-abouter" ref="section-1">
         <img src="/static/second_group.png">
         <div class="body-abouter-content">
           <div class="body-abouter-content-statistics">
@@ -47,7 +47,7 @@
         <div class="mob body-abouter-content-info-button">{{info.button}}</div>
       </div>
 
-      <div class="body-projects">
+      <div class="body-projects" ref="section-2">
         <div class="body-projects-title">Проекты</div>
         <div class="body-projects-item">
           <div class="body-projects-item-poject" v-for="project in projects">
@@ -57,7 +57,7 @@
           </div>
         </div>
       </div>
-      <div class="body-developer">
+      <div class="body-developer" ref="section-3">
         <div class="body-developer-title">О застройщике</div>
         <div class="body-developer-about">Осуществляем полный цикл работ от строительства до продажи квартир</div>
 
@@ -74,7 +74,7 @@
 
       </div>
 
-      <form class="body-form" method="POST" @submint.prevent="sendEmail">
+      <form class="body-form" method="POST" @submint.prevent="sendEmail" ref="section-4">
         <div class="body-form-title">Отправить запрос на сотрудничество </div>
 
         <div class="body-form-body">
@@ -89,7 +89,7 @@
 
     </div>
 
-    <div class="footer">
+    <div class="footer" ref="section-5">
       <div class="footer-title">Мы всегда рады сотрудничеству!</div>
       <a href="tel:87070000092" class="footer-phone">8 707 000 00 92</a>
       <a href="geo:43.2593064,76.9297241,15" class="footer-address">г. Алматы, Достык 97 Б, 278 офис </a>
@@ -104,8 +104,10 @@
     data: () => {
       return {
         touch: 0,
+        scrolling: true,
         page: 0,
         pages: 3,
+        main_page: 0,
         popup: false,
         type: undefined,
         message: '',
@@ -180,6 +182,8 @@
       }
     },
     mounted(){
+      document.scrollingElement.addEventListener("wheel", e => this.onWheel(e));
+
       document.body.ontouchstart = e => {
         this.touch = e.touches[0].clientX
       }
@@ -198,8 +202,53 @@
     }, 
     created(){
       setInterval(()=>this.switchPage(1),10000)
+      document.scrollingElement.onscroll = () => { this.scrolling = false}
     },
     methods:{
+      onWheel(e){
+        if(this.scrolling){
+          this.scrolling = false
+          if(e.deltaY < 0)
+            this.main_page--
+          else
+            this.main_page++
+
+          if(this.main_page <= 0)
+            this.main_page = 0
+          else if(this.main_page >= 5)
+            this.main_page = 5
+
+          let doc = document.scrollingElement
+          let top, end, status = false
+
+          top = document.scrollingElement.scrollTop
+          end = this.$refs['section-' + this.main_page].offsetTop + (this.main_page ? doc.clientHeight + (doc.clientHeight / 10) : 0)
+
+          if( top > end){
+            status = true
+          }
+
+          let inter = setInterval(()=>{
+
+            let start = !status  ? doc.scrollTop 
+                                 : end
+            let finish = status ? doc.scrollTop 
+                                : end
+
+            if(start >= finish || (this.main_page === 5 && doc.scrollTop === ( doc.scrollHeight - doc.clientHeight))){
+              clearInterval(inter)
+              this.scrolling = true
+            }
+            doc.scrollTo({
+              top: doc.scrollTop + (status ? -5: 5),
+            })
+          },0)
+          // scrollingElement.scrollTo({
+          //   top: this.$refs['section-' + this.main_page].offsetTop,
+          // })
+        }
+         
+      },
       popupMessage(e){
         this.type = e
         if(e === false)
@@ -357,6 +406,11 @@
   .header{
     height: 120vh;
     z-index: 0;
+    background-image: url(/static/first.png);
+    background-position: 0 -75px !important;
+    background-repeat: no-repeat !important;
+    background-size: 100% auto !important;
+    background-attachment: fixed !important;
     &>img{
       height: 120vh;
       position: absolute;
@@ -744,6 +798,9 @@
   }
 }
 @media screen and (max-width: 670px){
+  .header{
+    background-size: 100% 100% !important;
+  }
   .body-projects-item-poject-name{
     width: 100%;
     justify-content: flex-start;
