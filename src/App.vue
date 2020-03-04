@@ -8,43 +8,46 @@
       </div>
     </div>
 
-    <div class="header" ref="section-0">
+    <div class="header" ref="section-1">
+      <div class="logo">
+        <div class="logo-item">
+          <div class="logo-item-row">
+            <div :class="{center: i === 2}" v-for="i in 3"></div>
+          </div>
+          <div class="logo-item-row">
+            <div :class="{center: i === 2}" v-for="i in 3"></div>
+          </div>
+        </div>
+        <div class="logo-name">
+          <div class="logo-name-first">NB</div>
+          <div class="logo-name-second">HOLDING</div>
+        </div>
+      </div>
+      <div class="phone">
+        <div class="phone-main">+7 (777) <span>111 22 33</span></div>
+        <div class="phone-title">звонок беслатно</div>
+      </div>
+    </div>
       <img src="/static/first.png" style="display: none">
-      <div class="header-shadow"></div>
-      <div class="header-down"></div>
-    </div>
-    <div class="logo">
-      <div class="logo-item">
-        <div class="logo-item-row">
-          <div :class="{center: i === 2}" v-for="i in 3"></div>
-        </div>
-        <div class="logo-item-row">
-          <div :class="{center: i === 2}" v-for="i in 3"></div>
-        </div>
-      </div>
-      <div class="logo-name">
-        <div class="logo-name-first">NB</div>
-        <div class="logo-name-second">HOLDING</div>
-      </div>
-    </div>
 
     <div class="body">
       <div class="body-abouter" ref="section-1">
-        <img src="/static/second_group.png">
+        <img src="/static/first.png">
         <div class="body-abouter-content">
+          
+          <div class="body-abouter-content-info">
+            <div class="body-abouter-content-info-title">{{info.title}}</div>
+            <div class="body-abouter-content-info-about">{{info.about}}</div>
+          </div>
           <div class="body-abouter-content-statistics">
             <div class="body-abouter-content-statistics-statistic" v-for="statistic in info.statistics">
               <div class="body-abouter-content-statistics-statistic-value">{{statistic.value}}+</div>
               <div class="body-abouter-content-statistics-statistic-name">{{statistic.name}}</div>
             </div>
           </div>
-          <div class="body-abouter-content-info">
-            <div class="body-abouter-content-info-title">{{info.title}}</div>
-            <div class="body-abouter-content-info-about">{{info.about}}</div>
-            <div class="body-abouter-content-info-button">{{info.button}}</div>
-          </div>
+          <div class="body-abouter-content-info-button">{{info.button}}</div>
         </div>
-        <div class="mob body-abouter-content-info-button">{{info.button}}</div>
+
       </div>
 
       <div class="body-projects" ref="section-2">
@@ -57,7 +60,43 @@
           </div>
         </div>
       </div>
-      <div class="body-developer" ref="section-3">
+
+
+      <div class="body-now" ref="section-3">
+        <div class="body-now-title">Сейчас <span>в продаже</span></div>
+
+        <div class="body-now-content">
+          <div class="body-now-content-name">{{now.name}}</div>
+
+          <div class="body-now-content-pluses" v-for="plus in now.pluses">
+            <div class="body-now-content-pluses-title">{{plus.title}}</div>
+            <div class="body-now-content-pluses-about">{{plus.about}}</div>
+          </div>
+          <div class="body-abouter-content-info-button button">Скачать планировки и узнать стоимость </div>
+          
+        </div>
+        <div class="body-now-gallery">
+          <div :class="'img_' + i" :style="{background: `linear-gradient(0deg, rgba(0, 0, 0, ${i * 0.33}), rgba(0, 0, 0, ${i * 0.33})), url(/static/${img})`}" v-for="(img, i) in now.gallery"></div>
+        </div>
+      </div>
+
+
+      <div class="body-offices" ref="section-4">
+        <div class="body-offices-title">Офисы продаж</div>
+        <div class="body-offices-map">
+          <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A7a35d7cb0b42abd3ebcd520737a630827d8a1c61654e1e11988cc245b56b8782&amp;source=constructor" width="500" height="400" frameborder="0"></iframe>
+        </div>
+
+        <div class="body-offices-content">
+          <div class="body-offices-content-office" v-for="office in offices">
+            <div class="body-offices-content-office-location">{{office.location}}</div>
+            <div class="body-offices-content-office-working">{{office.working}}</div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="body-developer" ref="section-5">
         <div class="body-developer-title">О застройщике</div>
         <div class="body-developer-about">Осуществляем полный цикл работ от строительства до продажи квартир</div>
 
@@ -74,7 +113,7 @@
 
       </div>
 
-      <form class="body-form" method="POST" @submint.prevent="sendEmail" ref="section-4">
+      <form class="body-form" method="POST" @submint.prevent="sendEmail" ref="section-6">
         <div class="body-form-title">Отправить запрос на сотрудничество </div>
 
         <div class="body-form-body">
@@ -90,10 +129,15 @@
     </div>
 
     <div class="footer" ref="section-5">
-      <div class="footer-title">Мы всегда рады сотрудничеству!</div>
-      <a href="tel:87070000092" class="footer-phone">8 707 000 00 92</a>
-      <a href="geo:43.2593064,76.9297241,15" class="footer-address">г. Алматы, Достык 97 Б, 278 офис </a>
-      <div class="footer-copy">help@nb-holding.kz</div>
+      <div class="footer-col">
+        <div class="footer-title">Мы всегда рады сотрудничеству!</div>
+        <div class="footer-links"><a href=""></a><a href=""></a><a href=""></a></div>
+      </div>
+      <div class="footer-col">
+        <a href="tel:87070000092" class="footer-phone">8 707 000 00 92</a>
+        <a href="geo:43.2593064,76.9297241,15" class="footer-address">г. Алматы, Достык 97 Б, 278 офис </a>
+        <div class="footer-copy">help@nb-holding.kz</div>
+      </div>
     </div>
   </div>
 </template>
@@ -111,6 +155,38 @@
         popup: false,
         type: undefined,
         message: '',
+        now: {
+          name: 'ЖК “Family Town”',
+          gallery: ['now.png','now.png','now.png'],
+          pluses: [
+            {
+              title: 'Премиальное качество',
+              about: 'Авторская архитектура, модный дизайн и высокие технологии'
+            },
+            {
+              title: 'Идеальная среда для жизни',
+              about: 'Все необходимая инфраструктура поблизости'
+            },
+            {
+              title: 'Престижное расположение',
+              about: 'В одном из лучших районов Алматы, на пересечение улиц Тимирязева и Байтурсынова'
+            }
+          ]
+        },
+        offices: [
+          {
+            location: 'пр Абая, уг.пр Гагарина',
+            working: 'Понедельник - Воскресенье с 09:00 до 20:00'
+          },
+          {
+            location: 'пр Абая, уг.пр Гагарина',
+            working: 'Понедельник - Воскресенье с 09:00 до 20:00'
+          },
+          {
+            location: 'пр Абая, уг.пр Гагарина',
+            working: 'Понедельник - Воскресенье с 09:00 до 20:00'
+          }
+        ],
         inputs: [
           {
             name: 'Имя',
@@ -150,14 +226,14 @@
         ],
         projects: [
           {
-            name: 'ЖК Grand Avenue',
+            name: 'ЖК “Инара”',
             ending: 2018,
-            img: 'city.png'
+            img: 'city_0.png'
           },
           {
-            name: 'ЖК Grand Avenue',
+            name: 'ЖК “Family Town”',
             ending: 2018,
-            img: 'city.png'
+            img: 'city_1.png'
           }
         ],
         info: {
@@ -166,23 +242,34 @@
           button: 'Скачать планировки и узнать стоимость ',
           statistics: [
             {
-              value: 6,
+              value: 0,
+              max_value: 6,
               name: 'лет мы строим для вас жилые дома'
             },
             {
-              value: 400,
+              value: 0,
+              max_value: 400,
               name: 'семей проживают в наших ЖК'
             },
             {
-              value: 400,
+              value: 0,
+              max_value: 400,
               name: 'семей проживают в наших ЖК'
             }
           ]
         }
       }
     },
-    mounted(){
-      document.scrollingElement.addEventListener("wheel", e => this.onWheel(e));
+    async mounted(){
+      for(let i_static of this.info.statistics){
+        let inter = setInterval(()=>{
+          if(i_static.value <= i_static.max_value - 1)
+            i_static.value++
+          else 
+            clearInterval(inter)
+        },(800 / i_static.max_value))
+      }
+      // document.scrollingElement.addEventListener("wheel", e => this.onWheel(e));
 
       document.body.ontouchstart = e => {
         this.touch = e.touches[0].clientX
@@ -215,8 +302,8 @@
 
           if(this.main_page <= 0)
             this.main_page = 0
-          else if(this.main_page >= 5)
-            this.main_page = 5
+          else if(this.main_page >= 6)
+            this.main_page = 6
 
           let doc = document.scrollingElement
           let top, end, status = false
@@ -317,6 +404,7 @@
   }
   body{
     margin: 0 auto;
+    max-width: 1440px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -404,43 +492,16 @@
     
   }
   .header{
-    height: 120vh;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-between;
     z-index: 0;
-    background-image: url(/static/first.png);
-    background-position: 0 -75px !important;
-    background-repeat: no-repeat !important;
-    background-size: 100% auto !important;
-    background-attachment: fixed !important;
-    &>img{
-      height: 120vh;
-      position: absolute;
-      left: 0;
-      top: 23px;
-      width: auto;
-    }
-    &-shadow{
-      height: 100%;
-      background-color: $black_052;
-      backdrop-filter: blur(5px);
-    }
-    &-down{
-      display: none;
-      width: 0;
-      position: absolute;
-      bottom: 67px;
-      border-top: 15px solid $yellow;
-      border-left: 15px solid transparent;
-      border-right: 15px solid transparent;
-      cursor: pointer;
-      &:hover{
-        transform: scale(1.2);
-      }
-    }
+    padding: 1rem 3rem 0;
   }
   .logo{
     height: auto !important;
-    position: absolute;
-    top: 35vh;
+    // position: absolute;
+    // top: 35vh;
     z-index: 2;
     flex-direction: row;
     width: auto;
@@ -449,8 +510,13 @@
       &-row{
         width: auto;
         flex-direction: row;
+        animation: open_logo 1s linear 1 forwards;
+        &:last-child{
+          animation: open_logo_rev 1s linear 1 forwards;
+          // animation-direction: reverse;
+        }
         &>div{
-          background-color: $white;
+          background-color: $yellow;
           transform: skewY(-40deg);
           height: 24px;
           width: 36px;
@@ -464,51 +530,83 @@
     &-name{
       font-size: 36px;
       align-items: flex-start;
-      margin-left: 28px;
+      margin-left: 16px;
       user-select: none;
       cursor: default;
       &-first{
         font-weight: bold;
-        color: $white;
-        margin-bottom: 8px;
+        color: $black;
+        // margin-bottom: 8px;
         width: auto;
       }
       &-second{
         width: auto;
-        color: $white;
+        color: $black;
       }
     }
+  }
+  .phone{
+    width: auto;
+    flex-direction: column;
+    animation: open_head 1.5s linear 1 forwards;
+   &-main{
+    display: block;
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 37px;
+    &>span{
+      font-size: 48px;
+      color: $yellow;
+    }
+   }
+   &-title{
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 21px;
+   } 
   }
   .body{
 
     &>div{
-      min-height: 100vh;
+      // min-height: 100vh;
+      // max-height: 100vh;
     }
     &-abouter{
-      margin-top: -27.5vh;
-      height: 150vh;
-      &>img{
+      min-height: calc(100vh - 100px);
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-end;
+      &:after{
+        content: "";
         position: absolute;
-        top: 0;
-        height: 100%;
+        bottom: -25px;
+        height: 60px;
         width: 100%;
+        background-color: $yellow;
+      }
+      &>img{
+        top: 0;
+        width: 40%;
+        animation: open_img 1s ease-in-out 1 forwards;
       }
       &-content{
         min-height: 100vh;
-        padding: 5%;
-        // background-color: $yellow_092;
-        flex-direction: row;
+        padding: 0 5% 60px;
+        flex-direction: column;
+        justify-content: flex-end;
+        width: 60%;
         &-statistics{
-          width: auto;
-          margin-left: 10%;
+          width: calc(100% + 30px);
+          flex-direction: row;
           &-statistic{
-            padding: 0 80px;
-            margin-bottom: 45px;
+            margin: 0 15px 45px;
             &-value{
-              color: $yellow_l;
+              color: $yellow;
               font-weight: 800;
-              font-size: 40px;
+              font-size: 80px;
               line-height: 49px;
+              margin-bottom: 12px;
             }
             &-name{
               color: $yellow_l;
@@ -519,37 +617,34 @@
           }
         }
         &-info{
-          width: 80%;
           align-items: flex-start;
           &-title{
-          text-align: left;
+            text-align: left;
             width: auto;
             font-weight: 800;
             font-size: 50px;
             line-height: 150%;
+            animation: open_head 1s ease-out 1 forwards;
           }
           &-about{
             text-align: left;
             width: auto;
-            font-weight: 500;
+            font-weight: bold;
             font-size: 24px;
             line-height: 28px;
-            margin: 32px 0 84px;
+            margin: 16px 0 52px;
           }
           &-button{
             width: 312px;
             padding: 12px 60px;
-            background: $yellow_d;
+            background: #3DAF42;
             border-radius: 25px;
-            color: $yellow_l;
+            color: $white;
             font-weight: 500;
             font-size: 18px;
             line-height: 21px;
             cursor: pointer; 
             transition: 0.1s;
-            &.mob{
-              display: none;
-            }
             &:hover{
               color: $white;
             }
@@ -559,59 +654,189 @@
     }
     &-projects{
       background-color: $yellow_bg;
-      &:before, &:after{
-        content: "";
-        position: absolute;
-        top: -12.5vw;
-        left: 0;
-        z-index: 1;
-        border-bottom: 12.5vw solid $yellow_bg;
-        border-left: 33vw solid transparent;
-        border-right: 33vw solid transparent;
-      }
-      &:after{
-        left: 66vw;
-      }
+      padding: 60px 5%;
       &-title{
         font-weight: bold;
-        font-size: 40px;
-        line-height: 48px;
-        margin-bottom: 100px;
+        font-size: 60px;
+        line-height: 73px;
+        margin-bottom: 60px;
+        align-items: flex-start;
       }
       &-item{
         flex-direction: row;
         flex-wrap: wrap;
+        width: 100%;
+        // justify-content: space-between;
         &-poject{
           width: 100%;
           max-width: 400px;
-          margin: 15px 6%;
+          margin: 15px 8%;
           align-items: flex-start;
+          border-radius: 10px;
+          overflow: none;
           &-ending{
             color: $white_d;
             font-weight: 600;
-            font-size: 13px;
-            line-height: 15px;
-            background-color: $yellow_080;
+            font-size: 21px;
+            line-height: 24px;
+            background-color: $yellow;
             position: absolute;
-            width: auto;
+            width: 50%;
             padding: 12px 9px;
-            top: 12px;
-            left: -16px;
+            top: 16px;
+            left: 0;
           }
           &-img{
             width: 100%;
           }
           &-name{
-            margin: 5%;
-            width: 33%;
+            margin: 5% 0;
+            text-align: center;
+            color: $yellow_d;
+            font-weight: 600;
+            font-size: 26px;
+            line-height: 30px;
+          }
+        }
+      }
+    }
+    &-now{
+      background-color: $yellow_bg;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      padding: 0 5%;
+      &-title{
+        width: 100%;
+        text-align: left;
+        font-weight: bold;
+        font-size: 60px;
+        line-height: 73px;
+        display: block;
+        white-space: nowrap;
+        &>span{
+          padding: 0 1rem;
+          background-color: $yellow;
+          color: $white;
+        }
+      }
+      &-content{
+        width: 50%;
+        padding-right: 60px;
+        align-items: flex-start;
+        &-name{
+          font-weight: 600;
+          font-size: 36px;
+          line-height: 41px;
+          color: $yellow_d;
+          align-items: flex-start;
+          margin: 30px 0 10px;
+        }
+        &-pluses{
+          padding-left: 30px;
+          &-title{
+            align-items: flex-start;
+            font-weight: 500;
+            font-size: 28px;
+            line-height: 33px;
+            color: $black;
+            margin: 30px 0 20px;
+            &:after{
+              content: "";
+              position: absolute;
+              left: -30px;
+              background-color: $yellow;
+              height: 17px;
+              width: 21px;
+              border-radius: 3px;
+            }
+          }
+          &-about{
+            align-items: flex-start;
+            text-align: left;
+            font-weight: 300;
+            font-size: 24px;
+            line-height: 28px;
+          }
+        }
+        &>.button{
+          margin-top: 16px;
+          margin-left: 30px;
+        }
+      }
+      &-gallery{
+        width: 50%;
+        padding-right: 10%;
+        &>div{
+          position: absolute;
+          height: 50vh;
+          border-radius: 30px;
+          overflow: hidden;
+          background-size: 125% 125% !important;
+          background-position: 25% 25% !important;
+          box-shadow: 10px 24px 44px rgba(0, 0, 0, 0.18);
+          &.img_0{
+            z-index: 3;
+            transform: translate(0, 20%);
+          }
+          &.img_1{
+            z-index: 2;
+            background-color: linear-gradient(0deg, rgba(0, 0, 0, 0.33), rgba(0, 0, 0, 0.33));
+            transform: translate(10%, 10%);
+          }
+          &.img_2{
+            z-index: 1;
+            transform: translate(20%, 0%);
+          }
+        }
+      }
+    }
+
+    &-offices{
+      background-color: $yellow_bg;
+      flex-wrap: wrap;
+      padding: 60px 5%;
+      flex-direction: row;
+      &-title{
+        align-items: flex-start;
+        font-weight: bold;
+        font-size: 60px;
+        line-height: 73px;
+        margin-bottom: 35px;
+      }
+      &-map{
+        width: auto;
+        height: 50vh;
+        // background-color: $yellow;
+        overflow: hidden; 
+        box-shadow: 6px 8px 24px rgba(0, 0, 0, 0.15);
+        border-radius: 30px;
+      }
+      &-content{
+        width: calc(50% - 30px);
+        margin-left: 30px;
+        &-office{
+          padding-left: 30px;
+
+          &-location{
+            align-items: flex-start;
             text-align: left;
             font-weight: 500;
+            font-size: 28px;
+            line-height: 33px;
+          }
+          &-working{
+            margin: 20px 0 50px;
+            align-items: flex-start;
+            text-align: left;
+            font-weight: 300;
             font-size: 24px;
             line-height: 28px;
           }
         }
       }
     }
+
     &-developer{
       min-height: 100vh;
       padding: 5%;
@@ -620,12 +845,15 @@
       justify-content: flex-start;
       padding-bottom: 12.5vw;
       &-title{
+        align-items: flex-start;
         // color: $yellow_l;
         font-weight: bold;
-        font-size: 40px;
-        line-height: 48px;
+        font-size: 60px;
+        line-height: 73px;
+        margin-bottom: 20px;
       }
       &-about{
+        display: none;
         font-size: 30px;
         line-height: 35px;
         margin: 40px;
@@ -670,20 +898,7 @@
       width: 100%;
       padding: 50px;
       z-index: 1;
-      padding-bottom: 15.5vw;
-      &:before, &:after{
-        content: "";
-        position: absolute;
-        top: -12.5vw;
-        left: 0;
-        z-index: 1;
-        border-bottom: 12.5vw solid $yellow_092;
-        border-left: 33vw solid transparent;
-        border-right: 33vw solid transparent;
-      }
-      &:after{
-        left: 66vw;
-      }
+      // padding-bottom: 15.5vw;
       &-title{
         color: $yellow_l;
         font-weight: 500;
@@ -753,40 +968,50 @@
   .footer{
     background-color: $yellow_bg;
     padding: 5%;
-    &:before, &:after{
-      content: "";
-      position: absolute;
-      top: -12.5vw;
-      left: 0;
-      z-index: 1;
-      border-bottom: 12.5vw solid $yellow_bg;
-      border-left: 33vw solid transparent;
-      border-right: 33vw solid transparent;
-    }
-    &:after{
-      left: 66vw;
+    flex-direction: row;
+    &-col{
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
     }
     &-title{
+      justify-content: flex-start;
+      text-align: left;
       font-weight: bold;
-      font-size: 48px;
-      line-height: 150%;
+      font-size: 60px;
+      line-height: 130%;
+      margin-bottom: 20px;
+    }
+    &-links{
+      flex-direction: row;
+      justify-content: flex-start;
+      &>a{
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        margin: 14px;
+        background-color: $yellow;
+      }
     }
     &-phone{
+      align-items: flex-start;
       font-weight: 500;
-      font-size: 36px;
+      font-size: 50px;
       line-height: 150%;
       color: $yellow_l;
-      margin: 50px 0 40px;
+      margin-bottom: 20px;
     }
     &-address{
+      align-items: flex-start;
       font-weight: 500;
-      font-size: 20px;
+      font-size: 25px;
       line-height: 150%;
       color: $yellow_l;
     }
     &-copy{
+      align-items: flex-start;
       font-weight: 500;
-      font-size: 20px;
+      font-size: 25px;
       line-height: 150%;
       color: $yellow_l;
       margin-top: 30px;
@@ -799,24 +1024,144 @@
 }
 @media screen and (max-width: 670px){
   .header{
-    background-size: 100% 100% !important;
+    flex-direction: column;
   }
-  .body-projects-item-poject-name{
-    width: 100%;
-    justify-content: flex-start;
-    align-items: flex-start;
+  .logo{
+    margin-bottom: 32px;
   }
-  .body-projects{
-    &:before, &:after{
-      top: -12vw;
+  .phone{
+    &-main{
+      font-size: 32px;
+      line-height: 37px;
+      margin-bottom: 16px;
+      &>span{
+        font-size: 48px;
+      }
     }
     &-title{
-      font-size: 24px;
+      
     }
+  }
+  .body-projects{
+    padding: 30px 1%;
+    &-item{
+      &-poject{
+        margin: 15px 2%;
+        &-ending{
+          width: 80%;
+          font-size: 21px;
+          line-height: 24px;
+        }
+        &-name{
+          font-size: 26px;
+          line-height: 30px;
+        }
+      }
+    }
+    &-title{
+      align-items: center;
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+  }
+  .body-now{
+    flex-direction: column-reverse;
+    &-title{
+      position: absolute;
+      top: 0;
+      font-size: 40px;
+      line-height: 48px;
+      text-align: center;
+      white-space: normal;
+      &>span{
+        display: flex;
+        // width: 100%;
+        justify-content: center;
+      }
+    }
+    &-content{
+      width: 100%;
+      margin-top: 15px;
+      padding: unset;
+      &-pluses{
+        &-title{
+          text-align: left;
+          &:after{
+            top: 10%;
+          }
+        }
+      }
+      &>.button{
+        margin-left: unset;
+        max-width: 100%;
+        padding: 12px;
+      }
+    }
+    &-gallery{
+      width: 100%;
+      margin-top: 45vh;
+      &>div{
+        width: 100%;
+        &.img_0{
+          transform: translate(0, 0);
+        }
+        &.img_1{
+          transform: translate(25%, 0) scale(0.8);
+        }
+        &.img_2{
+          transform: translate(55%, 0) scale(0.7);
+        }
+      }
+      
+    }
+  }
+  .body-offices{
+    flex-direction: column-reverse;
+    &-title{
+      align-items: center;
+      position: absolute;
+      top: 30px;
+      font-size: 40px;
+      line-height: 48px;
+      text-align: center;
+      white-space: normal;
+    }
+    &-map{
+      width: 100%;
+      &>iframe{
+        width: 100% !important;
+      }
+    }
+    &-content{
+      width: 100%;
+      margin-top: 30px;
+      margin-left: unset;
+      &-office{
+        padding: 0 15px;
+        &-location{
+          color: $black;
+          font-weight: 500;
+          font-size: 22px;
+          line-height: 26px;
+        }
+        &-working{
+          font-weight: 300;
+          font-size: 17px;
+          line-height: 20px;
+        }
+      }
+    }
+
   }
   .body-developer{
     padding: 5% 0;
     padding-bottom: 12.5vw;
+    &-title{
+      align-items: center;
+      font-size: 40px;
+      line-height: 48px;
+      text-align: center;
+    }
     &-pages{
       flex-direction: row;
       &-page{
@@ -867,31 +1212,48 @@
       }
     }
   }
-  .body-abouter-content{
-    padding-top: 10%;
-    flex-direction: column-reverse;
-    &-statistics{
-      width: 100%;
-      margin: unset;
+  .body-abouter{
+    height: auto;
+    justify-content: flex-start;
+    margin-bottom: 25px;
+    &>img{
+      display: none;
     }
-    &-info{
-      align-items: center;
+    &-content{
+      padding-top: 10%;
       width: 100%;
-      &-title{
-        font-size: 24px;
-      }
-      &-about{
+      flex-direction: column;
+      &-statistics{
+        flex-direction: column;
         width: 100%;
-        align-items: flex-start;
-        font-size: 20px;
-        margin: 20px 0 20px;
+        margin: unset;
+        &-statistic{
+          &-value{
+            font-size: 50px;
+            line-height: 61px;
+          }
+        }
       }
-      &-button{
-        position: absolute;
-        bottom: 17.5vw;
-        display: none;
-        &.mob{
-          display: flex;
+      &-info{
+        align-items: center;
+        width: 100%;
+        &-title{
+          text-align: center;
+          font-weight: 800;
+          font-size: 26px;
+          line-height: 150%;
+        }
+        &-about{
+          width: 100%;
+          text-align: center;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 21px;
+          margin: 20px 0 20px;
+        }
+        &-button{
+          // position: absolute;
+          // bottom: 17.5vw;
         }
       }
     }
@@ -916,21 +1278,49 @@
     }
   }
   .footer{
-    &:before, &:after{
-      top: -12vw;
+    flex-direction: column;
+    &-col{
+
     }
     &-title{
+      justify-content: center;
+      text-align: center;
       font-size: 24px;
+      margin-bottom: unset;
+    }
+    &-links{
+      justify-content: center;
     }
     &-phone{
+      align-items: center;
       font-size: 22px;
     }
     &-address{
+      align-items: center;
       font-size: 16px;
     }
     &-copy{
+      align-items: center;
       font-size: 16px;
     }
   }
+}
+@keyframes open_logo {
+  from {transform: rotateY(360deg); opacity: 0}
+  to {transform: rotateY(0); opacity: 1}
+}
+@keyframes open_logo_rev {
+  from {transform: rotateY(-180deg); opacity: 0}
+  to {transform: rotateY(360deg); opacity: 1}
+}
+@keyframes open_img {
+  from {transform: translateY(100%); opacity: 0}
+  to {transform: translateY(0);opacity: 1}
+}
+@keyframes open_head {
+  from {transform: translateX(100%);opacity: 0}
+  70% {transform: translateX(0%);}
+  80% {transform: translateX(1%);}
+  to {transform: translateX(0);opacity: 1}
 }
 </style>
