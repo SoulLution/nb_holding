@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="phone">
-        <div class="phone-main">+7 (777) <span>111 22 33</span></div>
+        <a href="tel:87005040030" class="phone-main">+7 (700) <span>504 00 30</span></a>
         <div class="phone-title">звонок беслатно</div>
       </div>
     </div>
@@ -51,7 +51,7 @@
       </div>
 
       <div class="body-projects" ref="section-2">
-        <div class="body-projects-title">Проекты</div>
+        <div class="body-projects-title">Завершённые проекты</div>
         <div class="body-projects-item">
           <div class="body-projects-item-poject" v-for="project in projects">
             <div class="body-projects-item-poject-ending">Сдан в {{' ' + project.ending + ' '}} году</div>
@@ -76,9 +76,23 @@
           
         </div>
         <div class="body-now-gallery">
-          <div :class="'img_' + i" :style="{background: `linear-gradient(0deg, rgba(0, 0, 0, ${i * 0.33}), rgba(0, 0, 0, ${i * 0.33})), url(/static/${img})`}" v-for="(img, i) in now.gallery"></div>
+          <div :class="'img_' + checkGal(i)" :style="{background: `linear-gradient(0deg, rgba(0, 0, 0, ${checkGradient(i) * 0.33}), rgba(0, 0, 0, ${checkGradient(i) * 0.33})), url(/static/${img})`}" v-for="(img, i) in now.gallery"></div>
         </div>
       </div>
+
+      <form class="body-form" method="POST" @submint.prevent="sendEmail" ref="section-6">
+        <div class="body-form-title">Скачайте подробную презентацию жилого комплекса "Grand Avenue"</div>
+
+        <div class="body-form-body">
+          <label class="body-form-body-input" v-for="(input, i) in inputs" :for="'input-'+i">
+            <div class="body-form-body-input-name" :class="{'active': input.focus || input.data}">{{input.name}}</div>
+            <input :name="input.sub" :id="'input-'+i" @focus="input.focus = true" @blur="input.focus = false" v-model="input.data" required autocomplete="off">
+            <textarea :name="input.sub" :id="'input-'+i" @focus="input.focus = true" @blur="input.focus = false" v-model="input.data" v-if="false" required autocomplete="off"></textarea>
+          </label>
+        </div>
+        <label class="body-form-button" for="form-1">Получить</label>
+        <input type="submit" id="form-1" @click="sendEmail" style="display: none">
+      </form>
 
 
       <div class="body-offices" ref="section-4">
@@ -102,7 +116,7 @@
 
         <div class="body-developer-body">
           <div class="body-developer-body-column" :style="{left: '-' + (page * 100) + 'vw'}">
-            <div class="body-developer-body-column-text" v-for="about in abouts"><div>{{about.div}}</div><div>{{about.first}}</div><div>{{about.all}}</div></div>
+            <div class="body-developer-body-column-text" v-for="about in abouts"><span>{{about.div}}</span>{{about.first}}{{about.all}}</div>
           </div>
           <img class="body-developer-body-img" src="/static/arrow_group.png" :style="{left: (-(page * 50) + 50) + '%'}">
         </div>
@@ -113,31 +127,23 @@
 
       </div>
 
-      <form class="body-form" method="POST" @submint.prevent="sendEmail" ref="section-6">
-        <div class="body-form-title">Отправить запрос на сотрудничество </div>
-
-        <div class="body-form-body">
-          <label class="body-form-body-input" v-for="(input, i) in inputs" :for="'input-'+i">
-            <div class="body-form-body-input-name" :class="{'active': input.focus || input.data}">{{input.name}}</div>
-            <input :name="input.sub" :id="'input-'+i" @focus="input.focus = true" @blur="input.focus = false" v-model="input.data" v-if="i !== inputs.length-1" required autocomplete="off">
-            <textarea :name="input.sub" :id="'input-'+i" @focus="input.focus = true" @blur="input.focus = false" v-model="input.data" v-else required autocomplete="off"></textarea>
-          </label>
-        </div>
-        <input class="body-form-button" type="submit" value="Получить консультацию" @click="sendEmail">
-      </form>
-
     </div>
 
     <div class="footer" ref="section-5">
-      <div class="footer-col">
+      <div class="footer-links __new">
+        <a href=""><img src="/static/facebook.svg"></a>
+        <a href=""><img src="/static/instagram.svg"></a>
+        <a href=""><img src="/static/whatsapp.svg"></a>
+      </div>
+      <!--<div class="footer-col"> 
         <div class="footer-title">Мы всегда рады сотрудничеству!</div>
         <div class="footer-links"><a href=""></a><a href=""></a><a href=""></a></div>
-      </div>
+      </div> 
       <div class="footer-col">
-        <a href="tel:87070000092" class="footer-phone">8 707 000 00 92</a>
+        <a href="tel:87005040030" class="footer-phone">8 700 504 00 30</a>
         <a href="geo:43.2593064,76.9297241,15" class="footer-address">г. Алматы, Достык 97 Б, 278 офис </a>
         <div class="footer-copy">help@nb-holding.kz</div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -152,12 +158,13 @@
         page: 0,
         pages: 3,
         main_page: 0,
+        gal_item: 0,
         popup: false,
         type: undefined,
         message: '',
         now: {
-          name: 'ЖК “Family Town”',
-          gallery: ['now.png','now.png','now.png'],
+          name: 'ЖК “Grand Avenue”',
+          gallery: ['now_0.png','now_1.jpeg','now_2.jpeg','now_3.jpeg','now_4.jpeg','now_5.jpeg'],
           pluses: [
             {
               title: 'Премиальное качество',
@@ -168,24 +175,24 @@
               about: 'Все необходимая инфраструктура поблизости'
             },
             {
-              title: 'Престижное расположение',
-              about: 'В одном из лучших районов Алматы, на пересечение улиц Тимирязева и Байтурсынова'
+              title: 'Удобное расположение',
+              about: 'В самом центре Актау, в 28 микрорайоне'
             }
           ]
         },
         offices: [
           {
-            location: 'пр Абая, уг.пр Гагарина',
-            working: 'Понедельник - Воскресенье с 09:00 до 20:00'
+            location: '28 микрорайон, жилой комплекс «Grand Avenue»',
+            working: 'Понедельник- Суббота с 11:00 до 20:00'
           },
-          {
-            location: 'пр Абая, уг.пр Гагарина',
-            working: 'Понедельник - Воскресенье с 09:00 до 20:00'
-          },
-          {
-            location: 'пр Абая, уг.пр Гагарина',
-            working: 'Понедельник - Воскресенье с 09:00 до 20:00'
-          }
+          // {
+          //   location: 'пр Абая, уг.пр Гагарина',
+          //   working: 'Понедельник - Воскресенье с 09:00 до 20:00'
+          // },
+          // {
+          //   location: 'пр Абая, уг.пр Гагарина',
+          //   working: 'Понедельник - Воскресенье с 09:00 до 20:00'
+          // }
         ],
         inputs: [
           {
@@ -195,49 +202,46 @@
             focus: false
           },
           {
-            name: 'Email',
-            sub: 'Email',
+            name: 'Телефон',
+            sub: 'phone',
             data: '',
             focus: false
           },
-          {
-            name: 'Напишите свой вопрос',
-            sub: 'message',
-            data: '',
-            focus: false
-          } 
+          // {
+          //   name: 'Напишите свой вопрос',
+          //   sub: 'message',
+          //   data: '',
+          //   focus: false
+          // } 
         ],
         abouts: [
           {
-            div: 'Начиная',  
-            first: 'с 1997 года мы построили 26 жилых комплексов',
-            all: 'в Алматы и еще 4 находятся в процессе возведения на данный момент. NB является одной из ведущих строительных компаний, которой доверяют тысячи людей по всей стране.'
+            div: 'Строительная компания',  
+            first: ' «NB Constructions» входит в состав группы компаний «NB Holding».'
           },
           {  
-            div: 'Компания',  
-            first: 'NB стала одной из первых строительных',
-            all: 'компаний на территории нашей республики. Она была основана в 1997 году и успешно привлекает специалистов из разных отраслей и применяет их обширный опыт в своих проектах.'
+            div: 'Начиная',  
+            first: ' с 2014 года мы построили и  сдали в срок 2 жилых комплекса в Актау и еще 2 находятся на стадии возведения на данный момент',
           },
           { 
-            div: 'Станьте',  
-            first: 'частью семьи NB, выбрав апартаменты по ',
-            all: 'своему вкусу в наших жилых комплексах!'
+            div: 'В процессе',  
+            first: ' проектирования еще 3 жилых комплекса в г. Актобе и г. Алматы. ',
           }
         ],
         projects: [
           {
             name: 'ЖК “Инара”',
-            ending: 2018,
-            img: 'city_0.png'
+            ending: 2017,
+            img: 'city_1.png'
           },
           {
             name: 'ЖК “Family Town”',
             ending: 2018,
-            img: 'city_1.png'
+            img: 'city_0.png'
           }
         ],
         info: {
-          title: 'ВЫБЕРИ СВОЮ КВАРТИРУ В ЕДИНОМ ЦЕНТРЕ ПРОДАЖ',
+          title: 'ВЫБЕРИ СВОЮ КВАРТИРУ',
           about: 'выгодные цены напрямую от застройщика',
           button: 'Скачать планировки и узнать стоимость ',
           statistics: [
@@ -277,9 +281,9 @@
       document.body.ontouchend = e => {
         let x = e.changedTouches[0].clientX, index
 
-        if(this.touch - x > (document.body.clientWidth/2))
+        if(this.touch - x > (document.body.clientWidth/3))
           index = 1
-        else if(x -this.touch > (document.body.clientWidth/2))
+        else if(x -this.touch > (document.body.clientWidth/3))
           index = -1
 
         if(index)
@@ -289,9 +293,50 @@
     }, 
     created(){
       setInterval(()=>this.switchPage(1),10000)
+      setInterval(()=>{
+        if(this.gal_item + 1 >= this.now.gallery.length)
+          this.gal_item = 0
+        else this.gal_item++
+      },2000)
       document.scrollingElement.onscroll = () => { this.scrolling = false}
     },
     methods:{
+      checkGradient(index){
+        let end = 0
+        if(this.gal_item === index)
+          end = 0
+        else if(this.gal_item + 1 === index ||  this.gal_item + 1 - this.now.gallery.length-1 === index)
+          end = 1
+        else if(this.gal_item + 2 === index ||  this.gal_item + 2 - this.now.gallery.length-1 === index)
+          end = 2
+        return end
+      },
+      checkGal(index){
+        let end, type
+        type = this.gal_item - 1
+        if( type <= 0 ) type += this.now.gallery.length-1
+        if(index === type)
+          type = 0
+        else{
+          for(let i = 1; i < 4; i++){
+            type = this.gal_item + i
+            if( type > this.now.gallery.length-1 ) type -= this.now.gallery.length-1
+            if(index === type){
+              type = i
+              break;
+            }else
+              type = 4
+          }
+          if(this.gal_item === index) type = 5
+        }
+        switch( type ){
+          case 1: end = '1'; break; 
+          case 2: end = '2'; break; 
+          case 5: end = '0'; break; 
+          default: end = 'behind'; break;
+        }
+        return end
+      },
       onWheel(e){
         if(this.scrolling){
           this.scrolling = false
@@ -352,9 +397,11 @@
         let data = {_replyto: 'help@nb-holding.kz'}
         for(let i = 0; i < this.inputs.length; i++)
           data[this.inputs[i].sub] = this.inputs[i].data
+        data = this.changeData(data)
         this.$axios
          .post(
-              "https://formspree.io/mzbgbolj",
+          // 28761310.122737@parser.amocrm.ru
+              "mail.php",
               data
          )
          .then(res => {
@@ -366,6 +413,13 @@
             this.popupMessage(false)
          })
        return false
+      },
+      changeData(data){
+        let formData = new FormData()
+        Object.keys(data).forEach(key => {
+          formData.append(key, data[key])
+        })
+        return formData
       },
       switchPage(index){
         if(this.page+index >= this.pages)
@@ -550,6 +604,7 @@
     flex-direction: column;
     animation: open_head 1.5s linear 1 forwards;
    &-main{
+    cursor: pointer;
     display: block;
     white-space: nowrap;
     font-weight: 600;
@@ -573,7 +628,7 @@
       // max-height: 100vh;
     }
     &-abouter{
-      min-height: calc(100vh - 100px);
+      // min-height: calc(100vh - 100px);
       flex-direction: row;
       justify-content: center;
       align-items: flex-end;
@@ -594,7 +649,7 @@
         min-height: 100vh;
         padding: 0 5% 60px;
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: center;
         width: 60%;
         &-statistics{
           width: calc(100% + 30px);
@@ -705,7 +760,7 @@
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: flex-start;
-      padding: 0 5%;
+      padding: 0 5% 60px;
       &-title{
         width: 100%;
         text-align: left;
@@ -775,6 +830,11 @@
           background-size: 125% 125% !important;
           background-position: 25% 25% !important;
           box-shadow: 10px 24px 44px rgba(0, 0, 0, 0.18);
+          &.img_behind{
+            opacity: 0;
+            z-index: 0;
+            transform: translate(20%, 0%);
+          }
           &.img_0{
             z-index: 3;
             transform: translate(0, 20%);
@@ -861,28 +921,38 @@
       &-body{
         flex-direction: row;
         &-column{
+          align-items: flex-start;
           &-text{
+            width: 80%;
+            display: block;
+            text-align: left;
             flex-direction: row;
             flex-wrap: wrap;
             justify-content: flex-start;
             font-size: 22px;
             line-height: 27px;
             margin-bottom: 48px;
-            &:nth-child(2)>div:first-child:after{
+            &:nth-child(2)>span:first-child:after{
               width: 110%;
               right: -2.5%;
             }
-            &>div{
+            &>span{
+              position: relative;
               text-align: left;
               width: auto;
               margin: 0 5px;
-              &:first-child:after{
-                content: "";
-                width: calc(100% + 6vw);
-                right: 0;
-                position: absolute;
-                height: 37px;
-                background: $yellow_080;
+              z-index: 1;
+              &:first-child{
+                color: $white;
+                &:after{
+                  content: "";
+                  width: calc(100% + 6vw);
+                  right: 0;
+                  position: absolute;
+                  height: 32px;
+                  background: $yellow;
+                  z-index: -1;
+                }
               }
             }
           }
@@ -966,9 +1036,19 @@
     }
   }
   .footer{
+    background-color: $yellow;
     background-color: $yellow_bg;
-    padding: 5%;
+    // padding: 5%;
     flex-direction: row;
+    &:after{
+      content: "";
+      position: absolute;
+      height: 1px;
+      width: 100%;
+      top: 0;
+      background-color: $yellow;
+      opacity: 0.3;
+    }
     &-col{
       flex-direction: column;
       justify-content: flex-start;
@@ -985,6 +1065,14 @@
     &-links{
       flex-direction: row;
       justify-content: flex-start;
+      &.__new{
+      justify-content: center;
+      width: 100%;
+        &>a{
+          cursor: pointer;
+          background-color: $white;
+        }
+      }
       &>a{
         height: 50px;
         width: 50px;
@@ -1031,11 +1119,11 @@
   }
   .phone{
     &-main{
-      font-size: 32px;
+      font-size: 24px;
       line-height: 37px;
       margin-bottom: 16px;
       &>span{
-        font-size: 48px;
+        font-size: 32px;
       }
     }
     &-title{
@@ -1081,7 +1169,7 @@
     }
     &-content{
       width: 100%;
-      margin-top: 15px;
+      margin-top: 25vh;
       padding: unset;
       &-pluses{
         &-title{
@@ -1259,6 +1347,7 @@
     }
   }
   .body-form{
+    padding: 16px 5%;
     &:before, &:after{
       top: -12vw;
     }
@@ -1273,6 +1362,7 @@
       }
     }
     &-button{
+      padding: 16px 0;
       width: 100%;
       max-width: 100%;
     }
