@@ -25,7 +25,7 @@
       </div>
       <div class="phone">
         <a href="tel:87005040030" class="phone-main">+7 (700) <span>504 00 30</span></a>
-        <div class="phone-title">звонок беслатно</div>
+        <!-- <div class="phone-title">звонок бесплатно</div> -->
       </div>
     </div>
       <img src="/static/first.png" style="display: none">
@@ -98,7 +98,7 @@
       <div class="body-offices" ref="section-4">
         <div class="body-offices-title">Офисы продаж</div>
         <div class="body-offices-map">
-          <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A7a35d7cb0b42abd3ebcd520737a630827d8a1c61654e1e11988cc245b56b8782&amp;source=constructor" width="500" height="400" frameborder="0"></iframe>
+          <iframe src="https://yandex.com/map-widget/v1/?um=constructor%3A0b5bc52ae4bd48426563c529ab015d96d542ae8ac16816ea7f7aa7462e52c50f&amp;source=constructor" width="500" height="400" frameborder="0"></iframe>
         </div>
 
         <div class="body-offices-content">
@@ -131,9 +131,9 @@
 
     <div class="footer" ref="section-5">
       <div class="footer-links __new">
-        <a href=""><img src="/static/facebook.svg"></a>
-        <a href=""><img src="/static/instagram.svg"></a>
-        <a href=""><img src="/static/whatsapp.svg"></a>
+        <a href="https://facebook.com"><img src="/static/facebook.svg"></a>
+        <a href="https://instagram.com"><img src="/static/instagram.svg"></a>
+        <a href="https://whatsapp.com"><img src="/static/whatsapp.svg"></a>
       </div>
       <!--<div class="footer-col"> 
         <div class="footer-title">Мы всегда рады сотрудничеству!</div>
@@ -255,11 +255,11 @@
               max_value: 400,
               name: 'семей проживают в наших ЖК'
             },
-            {
-              value: 0,
-              max_value: 400,
-              name: 'семей проживают в наших ЖК'
-            }
+            // {
+            //   value: 0,
+            //   max_value: 400,
+            //   name: 'семей проживают в наших ЖК'
+            // }
           ]
         }
       }
