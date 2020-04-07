@@ -80,6 +80,16 @@
         </div>
       </div>
 
+      <div class="body-projects">
+        <div class="body-projects-title">Планировка</div>
+        <div class="body-projects-item lay" v-for="(lay, i) in layouts">
+          <div class="body-now-content-name">{{'Блок ' + (i+1)}}</div>
+          <div class="body-projects-item-poject lay" v-for="j in lay">
+            <img class="body-projects-item-poject-img lay" :src="`/static/block_${i}/${j-1}.png`">
+          </div>
+        </div>
+      </div>
+
       <form class="body-form" method="POST" @submint.prevent="sendEmail" ref="section-6">
         <div class="body-form-title">Скачайте подробную презентацию жилого комплекса "Grand Avenue"</div>
 
@@ -162,9 +172,10 @@
         popup: false,
         type: undefined,
         message: '',
+        layouts: [5,5,4,5],
         now: {
           name: 'ЖК “Grand Avenue”',
-          gallery: ['now_0.png','now_1.jpeg','now_2.jpeg','now_3.jpeg','now_4.jpeg','now_5.jpeg'],
+          gallery: ['now_0.jpg','now_1.jpg','now_2.jpg','now_3.jpg','now_4.jpg','now_5.jpg'],
           pluses: [
             {
               title: 'Премиальное качество',
@@ -722,6 +733,10 @@
         flex-wrap: wrap;
         width: 100%;
         // justify-content: space-between;
+
+        &.lay{
+          justify-content: flex-start;
+        }
         &-poject{
           width: 100%;
           max-width: 400px;
@@ -729,6 +744,10 @@
           align-items: flex-start;
           border-radius: 10px;
           overflow: none;
+          &.lay{
+            margin: unset;
+            max-width: 20%;
+          }
           &-ending{
             color: $white_d;
             font-weight: 600;
@@ -743,6 +762,9 @@
           }
           &-img{
             width: 100%;
+              &.lay{
+              width: 150%;
+            }
           }
           &-name{
             margin: 5% 0;
@@ -1135,6 +1157,9 @@
     &-item{
       &-poject{
         margin: 15px 2%;
+        &.lay{
+          max-width: 100%;
+        }
         &-ending{
           width: 80%;
           font-size: 21px;
@@ -1143,6 +1168,9 @@
         &-name{
           font-size: 26px;
           line-height: 30px;
+        }
+        &-img.lay{
+          margin-left: -25%; 
         }
       }
     }
