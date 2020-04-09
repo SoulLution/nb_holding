@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="phone">
-        <a href="tel:87005040030" class="phone-main">+7 (700) <span>504 00 30</span></a>
+        <a href="tel:87087718668" class="phone-main">+7 (708) <span>771 86 68</span></a>
         <!-- <div class="phone-title">звонок бесплатно</div> -->
       </div>
     </div>
@@ -76,17 +76,24 @@
           
         </div>
         <div class="body-now-gallery">
-          <div :class="'img_' + checkGal(i)" :style="{background: `linear-gradient(0deg, rgba(0, 0, 0, ${checkGradient(i) * 0.33}), rgba(0, 0, 0, ${checkGradient(i) * 0.33})), url(/static/${img})`}" v-for="(img, i) in now.gallery"></div>
+          <span class="arrow __left" @click="gal_item = checkGalItem(gal_item,now.gallery.length,-1)"></span>
+          <span class="arrow __right" @click="gal_item = checkGalItem(gal_item,now.gallery.length,1)"></span>
+          <div :class="'img_' + checkGal(gal_item, now.gallery.length, i)" :style="{background: `linear-gradient(0deg, rgba(0, 0, 0, ${checkGradient(gal_item, now.gallery.length, i) * 0.33}), rgba(0, 0, 0, ${checkGradient(gal_item, now.gallery.length, i) * 0.33})), url(/static/${img})`}" v-for="(img, i) in now.gallery"></div>
         </div>
       </div>
 
       <div class="body-projects">
         <div class="body-projects-title">Планировка</div>
         <div class="body-projects-item lay" v-for="(lay, i) in layouts">
-          <div class="body-now-content-name">{{'Блок ' + (i+1)}}</div>
-          <div class="body-projects-item-poject lay" v-for="j in lay">
-            <img class="body-projects-item-poject-img lay" :src="`/static/block_${i}/${j-1}.png`">
+          <div class="body-now-content-name">{{checkBlock(i)}}</div>
+          <div class="body-now-gallery lay">
+            <span class="arrow __left" @click="lay.item = checkGalItem(lay.item,lay.max,-1)" v-if="lay.max>1"></span>
+          <span class="arrow __right" @click="lay.item = checkGalItem(lay.item,lay.max,1)" v-if="lay.max>1"></span>
+            <div :class="'img_' + checkGal(lay.item, lay.max, j)" :style="{background: `url(/static/block_${i}/${img-1}.png)`}" v-for="(img, j) in lay.max"></div>
           </div>
+          <!-- <div class="body-projects-item-poject lay" v-for="j in lay">
+            <img class="body-projects-item-poject-img lay" :src="`/static/block_${i}/${j-1}.png`">
+          </div> -->
         </div>
       </div>
 
@@ -172,7 +179,24 @@
         popup: false,
         type: undefined,
         message: '',
-        layouts: [5,5,4,5],
+        layouts: [
+          {
+            max: 4,
+            item: 0
+          },
+          {
+            max: 3,
+            item: 0
+          },
+          {
+            max: 1,
+            item: 0
+          },
+          {
+            max: 1,
+            item: 0
+          }
+        ],
         now: {
           name: 'ЖК “Grand Avenue”',
           gallery: ['now_0.jpg','now_1.jpg','now_2.jpg','now_3.jpg','now_4.jpg','now_5.jpg'],
@@ -304,41 +328,61 @@
     }, 
     created(){
       setInterval(()=>this.switchPage(1),10000)
-      setInterval(()=>{
-        if(this.gal_item + 1 >= this.now.gallery.length)
-          this.gal_item = 0
-        else this.gal_item++
-      },2000)
+      // setInterval(()=>{
+        // this.gal_item = this.checkGalItem(this.gal_item,this.now.gallery.length,1)
+      //   if(this.gal_item <= 0)
+      //     this.gal_item = this.now.gallery.length-1
+      //   else this.gal_item--
+      // },2000)
       document.scrollingElement.onscroll = () => { this.scrolling = false}
     },
     methods:{
-      checkGradient(index){
+      checkBlock(index){
+        let end
+        switch(index){
+          case 0: end = 'Односпальная'; break;
+          case 1: end = 'Двухспальная'; break;
+          case 2: end = 'Трёхспальная'; break;
+          case 3: end = 'Четырёхспальная'; break;
+        }
+        return end
+      },
+      checkGalItem(item, max, to){
+        if(to > 0 &&item >= max-1)
+          item = 0
+        else if(to < 0 && item <= 0)
+          item = max-1
+        else item += to
+
+        return item
+      },
+      checkGradient(item, max, index){
         let end = 0
-        if(this.gal_item === index)
+        if(item === index)
           end = 0
-        else if(this.gal_item + 1 === index ||  this.gal_item + 1 - this.now.gallery.length-1 === index)
+        else if(item + 1 === index ||  item + 1 - max-1 === index)
           end = 1
-        else if(this.gal_item + 2 === index ||  this.gal_item + 2 - this.now.gallery.length-1 === index)
+        else if(item + 2 === index ||  item + 2 - max-1 === index)
           end = 2
         return end
       },
-      checkGal(index){
+      checkGal(item, max, index){
         let end, type
-        type = this.gal_item - 1
-        if( type <= 0 ) type += this.now.gallery.length-1
+        type = item - 1
+        if( type <= 0 ) type += max-1
         if(index === type)
           type = 0
         else{
           for(let i = 1; i < 4; i++){
-            type = this.gal_item + i
-            if( type > this.now.gallery.length-1 ) type -= this.now.gallery.length-1
+            type = item + i
+            if( type > max-1 ) type -= max-1
             if(index === type){
               type = i
               break;
             }else
               type = 4
           }
-          if(this.gal_item === index) type = 5
+          if(item === index) type = 5
         }
         switch( type ){
           case 1: end = '1'; break; 
@@ -721,6 +765,8 @@
     &-projects{
       background-color: $yellow_bg;
       padding: 60px 5%;
+      flex-direction: row;
+      flex-wrap: wrap;
       &-title{
         font-weight: bold;
         font-size: 60px;
@@ -735,7 +781,8 @@
         // justify-content: space-between;
 
         &.lay{
-          justify-content: flex-start;
+          width: 50%;
+          justify-content: center;
         }
         &-poject{
           width: 100%;
@@ -843,32 +890,61 @@
       }
       &-gallery{
         width: 50%;
-        padding-right: 10%;
+        // padding-right: 10%;
+        height: 70vh;
+        &.lay{
+          width: 50vh;
+          &>div{
+            width: 50vh;
+            height: 50vh;
+          }
+        }
+        .arrow{
+          height: 40px;
+          width: 40px;
+          position: absolute;
+          border-top-left-radius: 5px;
+          border-top: 2px solid $yellow;
+          border-left: 2px solid $yellow;
+          z-index: 4;
+          cursor: pointer;
+          &.__left{
+            left: -25px;
+            transform: rotate(-45deg);
+          }
+          &.__right{
+            right: -25px;
+            transform: rotate(135deg);
+          }
+        }
         &>div{
           position: absolute;
-          height: 50vh;
+          height: 70vh;
+          width: 70vh;
           border-radius: 30px;
           overflow: hidden;
           background-size: 125% 125% !important;
           background-position: 25% 25% !important;
-          box-shadow: 10px 24px 44px rgba(0, 0, 0, 0.18);
+          // box-shadow: 10px 24px 44px rgba(0, 0, 0, 0.18);
           &.img_behind{
             opacity: 0;
             z-index: 0;
-            transform: translate(20%, 0%);
+            transform: translate(-10%, 0%);
           }
           &.img_0{
             z-index: 3;
-            transform: translate(0, 20%);
+            // transform: translate(0, 20%);
           }
           &.img_1{
             z-index: 2;
-            background-color: linear-gradient(0deg, rgba(0, 0, 0, 0.33), rgba(0, 0, 0, 0.33));
-            transform: translate(10%, 10%);
+            opacity: 0;
+            // background-color: linear-gradient(0deg, rgba(0, 0, 0, 0.33), rgba(0, 0, 0, 0.33));
+            transform: translate(10%, 0);
           }
           &.img_2{
             z-index: 1;
-            transform: translate(20%, 0%);
+            opacity: 0;
+            // transform: translate(20%, 0%);
           }
         }
       }
@@ -1155,11 +1231,11 @@
   .body-projects{
     padding: 30px 1%;
     &-item{
+      &.lay{
+        width: 100%;
+      }
       &-poject{
         margin: 15px 2%;
-        &.lay{
-          max-width: 100%;
-        }
         &-ending{
           width: 80%;
           font-size: 21px;
@@ -1197,7 +1273,7 @@
     }
     &-content{
       width: 100%;
-      margin-top: 25vh;
+      margin-top: 15vh;
       padding: unset;
       &-pluses{
         &-title{
@@ -1214,8 +1290,16 @@
       }
     }
     &-gallery{
-      width: 100%;
-      margin-top: 45vh;
+      height: 80vw;
+      width: 80vw;
+      margin-top: 40vh;
+      // margin: 15vw 0 15vh;
+      // height: 70vh;
+      &.lay{
+        margin: unset;
+        width: 100vw;
+        height: 50vh;
+      }
       &>div{
         width: 100%;
         &.img_0{
