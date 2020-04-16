@@ -8,6 +8,19 @@
       </div>
     </div>
 
+    <div class="popup" v-if="popup_form">
+      <div class="popup-bg" @click="popup_form = false"></div>
+      <form class="popup-content" @submint.prevent="sendEmail">
+        <label class="body-form-body-input form" v-for="(input, i) in inputs" :for="'input-'+i">
+            <div class="body-form-body-input-name" :class="{'active': input.focus || input.data}">{{input.name}}</div>
+            <input :name="input.sub" :id="'input-'+i" @focus="input.focus = true" @blur="input.focus = false" v-model="input.data" required autocomplete="off">
+            <textarea :name="input.sub" :id="'input-'+i" @focus="input.focus = true" @blur="input.focus = false" v-model="input.data" v-if="false" required autocomplete="off"></textarea>
+        </label>
+        <label class="popup-content-button" for="form-0">Получить</label>
+        <input type="submit" id="form-0" @click="sendEmail" style="display: none">
+      </form>
+    </div>
+
     <div class="header" ref="section-1">
       <div class="logo">
         <div class="logo-item">
@@ -24,7 +37,7 @@
         </div>
       </div>
       <div class="phone">
-        <a href="tel:87087718668" class="phone-main">+7 (708) <span>771 86 68</span></a>
+        <a href="tel:87005040030" class="phone-main">+7 (700) <span>504 00 30</span></a>
         <!-- <div class="phone-title">звонок бесплатно</div> -->
       </div>
     </div>
@@ -45,7 +58,7 @@
               <div class="body-abouter-content-statistics-statistic-name">{{statistic.name}}</div>
             </div>
           </div>
-          <div class="body-abouter-content-info-button">{{info.button}}</div>
+          <div class="body-abouter-content-info-button" @click="popup_form = true">{{info.button}}</div>
         </div>
 
       </div>
@@ -62,41 +75,71 @@
       </div>
 
 
+
+
+
+
+
+
+
       <div class="body-now" ref="section-3">
         <div class="body-now-title">Сейчас <span>в продаже</span></div>
 
         <div class="body-now-content">
           <div class="body-now-content-name">{{now.name}}</div>
 
-          <div class="body-now-content-pluses" v-for="plus in now.pluses">
-            <div class="body-now-content-pluses-title">{{plus.title}}</div>
-            <div class="body-now-content-pluses-about">{{plus.about}}</div>
+          <div class="body-now-content-pluses">
+            <div class="body-now-content-pluses-plus" v-for="plus in now.pluses">
+              <img class="body-now-content-pluses-img" :src="`/static/${plus.img}`">
+              <div class="body-now-content-pluses-title">{{plus.title}}</div>
+            <!-- <div class="body-now-content-pluses-about">{{plus.about}}</div> -->
           </div>
-          <div class="body-abouter-content-info-button button">Скачать планировки и узнать стоимость </div>
+          </div>
+          <div class="body-abouter-content-info-button button" @click="popup_form = true">Скачать планировки и узнать стоимость </div>
           
         </div>
-        <div class="body-now-gallery">
-          <span class="arrow __left" @click="gal_item = checkGalItem(gal_item,now.gallery.length,-1)"></span>
-          <span class="arrow __right" @click="gal_item = checkGalItem(gal_item,now.gallery.length,1)"></span>
-          <div :class="'img_' + checkGal(gal_item, now.gallery.length, i)" :style="{background: `linear-gradient(0deg, rgba(0, 0, 0, ${checkGradient(gal_item, now.gallery.length, i) * 0.33}), rgba(0, 0, 0, ${checkGradient(gal_item, now.gallery.length, i) * 0.33})), url(/static/${img})`}" v-for="(img, i) in now.gallery"></div>
+        <div class="body-now-img">
+          <img src="/static/нб11.jpg">
         </div>
       </div>
 
-      <div class="body-projects">
+
+
+
+
+
+      <div class="body-layouts">
         <div class="body-projects-title">Планировка</div>
-        <div class="body-projects-item lay" v-for="(lay, i) in layouts">
-          <div class="body-now-content-name">{{checkBlock(i)}}</div>
-          <div class="body-now-gallery lay">
-            <span class="arrow __left" @click="lay.item = checkGalItem(lay.item,lay.max,-1)" v-if="lay.max>1"></span>
-          <span class="arrow __right" @click="lay.item = checkGalItem(lay.item,lay.max,1)" v-if="lay.max>1"></span>
-            <div :class="'img_' + checkGal(lay.item, lay.max, j)" :style="{background: `url(/static/block_${i}/${img-1}.png)`}" v-for="(img, j) in lay.max"></div>
+
+        <div class="body-layouts-sector">
+          <div class="body-layouts-sector-text">Количество комнат</div>
+          <div class="body-layouts-sector-tabs">
+            <div class="body-layouts-sector-tabs-tab" :class="{'active': layouts_apartment === i}" v-for="(j, i) in layouts" @click="changeLayout(i)"><span>{{i+1}}</span></div>
           </div>
-          <!-- <div class="body-projects-item-poject lay" v-for="j in lay">
-            <img class="body-projects-item-poject-img lay" :src="`/static/block_${i}/${j-1}.png`">
-          </div> -->
+        </div>
+
+        <div class="body-layouts-sector">
+          <div class="body-layouts-sector-text">Площадь</div>
+          <div class="body-layouts-sector-tabs">
+            <div class="body-layouts-sector-tabs-tab" :class="{'active': layouts_area === i, 'one': layouts[layouts_apartment].length === 1}" v-for="(area, i) in layouts[layouts_apartment]" @click="layouts_area = i"><span>{{area}}м<sup>2</sup></span></div>
+          </div>
+        </div>
+
+        <div class="body-layouts-item lay">
+          <div class="body-now-gallery lay">
+            <img class="img_0" :src="`/static/block_${layouts_apartment}/${layouts[layouts_apartment][layouts_area]}.png`">
+          </div>
         </div>
       </div>
 
+      <div class="body-now-gallery full">
+        <div class="body-offices-title">Галлерея проетка</div>
+        <span class="arrow __left" @click="gal_item = checkGalItem(gal_item,now.gallery.length,-1)"></span>
+        <span class="arrow __right" @click="gal_item = checkGalItem(gal_item,now.gallery.length,1)"></span>
+        <img :class="'img_' + checkGal(gal_item, now.gallery.length, i)" :src="`/static/${img}`" v-for="(img, i) in now.gallery">
+      </div>
+
+      <!-- <form class="body-form" method="POST" action="20757133.213011@parser.amocrm.ru" ref="section-6"> -->
       <form class="body-form" method="POST" @submint.prevent="sendEmail" ref="section-6">
         <div class="body-form-title">Скачайте подробную презентацию жилого комплекса "Grand Avenue"</div>
 
@@ -108,8 +151,11 @@
           </label>
         </div>
         <label class="body-form-button" for="form-1">Получить</label>
+        <!-- <input type="submit" id="form-1" style="display: none"> -->
         <input type="submit" id="form-1" @click="sendEmail" style="display: none">
       </form>
+
+
 
 
       <div class="body-offices" ref="section-4">
@@ -148,9 +194,9 @@
 
     <div class="footer" ref="section-5">
       <div class="footer-links __new">
-        <a href="https://facebook.com"><img src="/static/facebook.svg"></a>
-        <a href="https://instagram.com"><img src="/static/instagram.svg"></a>
-        <a href="https://whatsapp.com"><img src="/static/whatsapp.svg"></a>
+        <!-- <a href="https://facebook.com"><img src="/static/facebook.svg"></a> -->
+        <a href="https://instagram.com/nb_constructions"><img src="/static/instagram.svg"></a>
+        <a href="https://wa.me/87005040030"><img src="/static/whatsapp.svg"></a>
       </div>
       <!--<div class="footer-col"> 
         <div class="footer-title">Мы всегда рады сотрудничеству!</div>
@@ -179,23 +225,14 @@
         popup: false,
         type: undefined,
         message: '',
+        layouts_apartment: 0,
+        layouts_area: 0,
+        popup_form: false,
         layouts: [
-          {
-            max: 4,
-            item: 0
-          },
-          {
-            max: 3,
-            item: 0
-          },
-          {
-            max: 1,
-            item: 0
-          },
-          {
-            max: 1,
-            item: 0
-          }
+          ['41,63','44,02','48,26','48,89','49,13','51,4','51,07','54,93','55,26','55,49','61,38'],
+          ['66,95','74,46','87,82'],
+          ['105,64'],
+          ['155,8']
         ],
         now: {
           name: 'ЖК “Grand Avenue”',
@@ -203,14 +240,17 @@
           pluses: [
             {
               title: 'Премиальное качество',
+              img: 'icon_0.png',
               about: 'Авторская архитектура, модный дизайн и высокие технологии'
             },
             {
               title: 'Идеальная среда для жизни',
+              img: 'icon_1.png',
               about: 'Все необходимая инфраструктура поблизости'
             },
             {
               title: 'Удобное расположение',
+              img: 'icon_2.png',
               about: 'В самом центре Актау, в 28 микрорайоне'
             }
           ]
@@ -337,6 +377,10 @@
       document.scrollingElement.onscroll = () => { this.scrolling = false}
     },
     methods:{
+      changeLayout(index){
+        this.layouts_apartment = index
+        this.layouts_area = 0
+      },
       checkBlock(index){
         let end
         switch(index){
@@ -449,13 +493,13 @@
       sendEmail(e){
         e.preventDefault();
         this.popupMessage(undefined)
-        let data = {_replyto: 'help@nb-holding.kz'}
+        let data = {_replyto: 'help@nb-construction.kz'}
         for(let i = 0; i < this.inputs.length; i++)
           data[this.inputs[i].sub] = this.inputs[i].data
         data = this.changeData(data)
         this.$axios
          .post(
-          // 28761310.122737@parser.amocrm.ru
+          // 'https://20757133.213011@parser.amocrm.ru',
               "mail.php",
               data
          )
@@ -463,11 +507,20 @@
             for(let i = 0; i < this.inputs.length; i++)
               this.inputs[i].data = ''
             this.popupMessage(true)
+
+            let a = document.createElement('a')
+            a.setAttribute('href', '/static/Prezentatsia.pdf')
+            a.setAttribute('download', 'Презентация Grand Avenue')
+            a.click()
+
          })
          .catch(err => {
             this.popupMessage(false)
          })
-       return false
+
+
+        this.popup_form = false
+        return false
       },
       changeData(data){
         let formData = new FormData()
@@ -513,11 +566,11 @@
   }
   body{
     margin: 0 auto;
-    max-width: 1440px;
+    // max-width: 1440px;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-x: hidden;
+    overflow-x: visible;
     text-align: center;
   }
   div, form, label, a{
@@ -538,6 +591,9 @@
   }
   img{
     user-select: none;
+  }
+  iframe{
+    height: 100%;
   }
   *::-webkit-scrollbar-thumb{
     background-color: $yellow;
@@ -677,6 +733,7 @@
    } 
   }
   .body{
+    overflow-x: hidden;
 
     &>div{
       // min-height: 100vh;
@@ -692,7 +749,8 @@
         position: absolute;
         bottom: -25px;
         height: 60px;
-        width: 100%;
+        width: 100vw;
+        z-index: 1;
         background-color: $yellow;
       }
       &>img{
@@ -763,10 +821,12 @@
       }
     }
     &-projects{
-      background-color: $yellow_bg;
       padding: 60px 5%;
       flex-direction: row;
       flex-wrap: wrap;
+      overflow: visible;
+      background-color: $yellow_bg;
+
       &-title{
         font-weight: bold;
         font-size: 60px;
@@ -786,8 +846,8 @@
         }
         &-poject{
           width: 100%;
-          max-width: 400px;
-          margin: 15px 8%;
+          max-width: calc(50% - 64px);
+          margin: 15px 32px;
           align-items: flex-start;
           border-radius: 10px;
           overflow: none;
@@ -804,7 +864,7 @@
             position: absolute;
             width: 50%;
             padding: 12px 9px;
-            top: 16px;
+            top: 7.5%;
             left: 0;
           }
           &-img{
@@ -825,11 +885,13 @@
       }
     }
     &-now{
-      background-color: $yellow_bg;
+      // background-color: $yellow_bg;
+      background-color: $white;
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: flex-start;
-      padding: 0 5% 60px;
+      align-items: flex-start;
+      padding: 12px 0% 60px 5%;
       &-title{
         width: 100%;
         text-align: left;
@@ -847,7 +909,7 @@
       &-content{
         width: 50%;
         padding-right: 60px;
-        align-items: flex-start;
+        align-items: center;
         &-name{
           font-weight: 600;
           font-size: 36px;
@@ -857,7 +919,19 @@
           margin: 30px 0 10px;
         }
         &-pluses{
-          padding-left: 30px;
+          // padding-left: 30px;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: flex-start;
+          min-height: 75vh;
+          &-plus{
+            width: 50%;
+            align-items: center;
+          }
+          &-img{
+            width: auto;
+            height: auto;
+          }
           &-title{
             align-items: flex-start;
             font-weight: 500;
@@ -866,7 +940,7 @@
             color: $black;
             margin: 30px 0 20px;
             &:after{
-              content: "";
+              // content: "";
               position: absolute;
               left: -30px;
               background-color: $yellow;
@@ -885,18 +959,75 @@
         }
         &>.button{
           margin-top: 16px;
-          margin-left: 30px;
+          // margin-left: 30px;
+        }
+      }
+      &-img{
+        width: 50%;
+        height: auto;
+        min-height: 75vh;
+        &>img{
+          width: 100%;
         }
       }
       &-gallery{
         width: 50%;
         // padding-right: 10%;
+        justify-content: center;
+        align-items: center;
         height: 70vh;
         &.lay{
           width: 50vh;
-          &>div{
+          &>div, &>img{
             width: 50vh;
             height: 50vh;
+          }
+        }
+        &.full{
+          height: auto;
+          padding-top: 100px;
+          margin-top: unset;
+          width: 100vw;
+          align-items: flex-start;
+          background-color: $yellow_bg;
+          .body-offices-title{
+            top: 0;
+            padding: 0 5%;
+            width: auto;
+            height: auto;
+          }
+          &>img{
+            &.img_0{
+              position: relative;
+            }
+            border-radius: unset;
+            width: 100vw;
+            height: 100vw;
+          }
+          .arrow{
+            border: 2px solid $yellow_bg;
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &:before{
+              z-index: -1;
+              content: "";
+              height: 50%;
+              width: 50%;
+              margin-left: 10px;
+              margin-top: 10px;
+              border-top: 2px solid $yellow_bg;
+              border-left: 2px solid $yellow_bg;
+            }
+            &.__left{
+              left: 25px;
+            }
+            &.__right{
+              right: 25px;
+            }
           }
         }
         .arrow{
@@ -917,7 +1048,7 @@
             transform: rotate(135deg);
           }
         }
-        &>div{
+        &>div,&>img{
           position: absolute;
           height: 70vh;
           width: 70vh;
@@ -925,6 +1056,7 @@
           overflow: hidden;
           background-size: 125% 125% !important;
           background-position: 25% 25% !important;
+          transition: 0.3s;
           // box-shadow: 10px 24px 44px rgba(0, 0, 0, 0.18);
           &.img_behind{
             opacity: 0;
@@ -945,6 +1077,85 @@
             z-index: 1;
             opacity: 0;
             // transform: translate(20%, 0%);
+          }
+        }
+      }
+    }
+
+    &-layouts{
+      padding: 0 5%;
+      background-color: $yellow_bg;
+      &-sector{
+        flex-direction: row;
+        font-size: 32px;
+        justify-content: flex-start;
+        padding: 30px 0;
+        &-text{
+          width: 30%;
+          text-align: left;
+          align-items: flex-start;
+        }
+        &-tabs{
+          width: auto;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: flex-start;
+          &-tab{
+            min-width: 60px;
+            width: auto;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            border: 1px solid $yellow;
+            transition: 0s;
+            &:after{
+              content: "";
+              position: absolute;
+              height: 100%;
+              width: 100%;
+              top: 0;
+              left: 0;
+              border-radius: inherit;
+              transition: 0s;
+            }
+            &:first-child{
+              border-radius: 15px 0 0 15px;
+            }
+            &:last-child{
+              border-radius: 0 15px 15px 0;
+            }
+            &.one{
+              border-radius: 15px;
+            }
+            &>span{
+              z-index: 1;
+            }
+            &.active{
+              border-color: transparent;
+              z-index: 1;
+              color: $white;
+              &:after{
+                background-color: $yellow;
+                // background-color: #3DAF42;
+                transform: scale(1.2, 1.05);
+                box-shadow: -1px 3px 40px 0 #ffd68d;
+                // box-shadow: 5px 5px 1px $yellow_l; 
+                z-index: 0;
+                transition: transform 0.3s;
+              }
+            }
+          }
+
+        }
+      }
+      &-item{
+        &>.lay{
+          width: 100%;
+          height: auto;
+          &>img{
+            position: relative;
+            height: auto;
+            width: 100%;
           }
         }
       }
@@ -1086,6 +1297,10 @@
           margin: 2.5%;
           &:nth-child(3){
             width: 100%;
+          }
+          &.form{
+            width: 100%;
+            border: 1px solid $yellow;
           }
           &-name{
             font-size: 18px;
@@ -1236,6 +1451,7 @@
       }
       &-poject{
         margin: 15px 2%;
+        max-width: 100%;
         &-ending{
           width: 80%;
           font-size: 21px;
@@ -1275,6 +1491,7 @@
       width: 100%;
       margin-top: 15vh;
       padding: unset;
+      flex-wrap: wrap;
       &-pluses{
         &-title{
           text-align: left;
@@ -1289,6 +1506,10 @@
         padding: 12px;
       }
     }
+    &-img{
+      width: 100%;
+      margin-top: 20vh;
+    }
     &-gallery{
       height: 80vw;
       width: 80vw;
@@ -1297,10 +1518,10 @@
       // height: 70vh;
       &.lay{
         margin: unset;
-        width: 100vw;
+        width: calc(100vw - 75px);
         height: 50vh;
       }
-      &>div{
+      &>div, &>img{
         width: 100%;
         &.img_0{
           transform: translate(0, 0);
@@ -1315,6 +1536,28 @@
       
     }
   }
+  .body-layouts{
+    padding: 0 5%;
+    background-color: $yellow_bg;
+    &-sector{
+      flex-direction: column;
+      font-size: 32px;
+      justify-content: flex-start;
+      &-text{
+        width: 100%;
+        align-items: center;
+      }
+      &-tabs{
+        
+      }
+    }
+    &-item{
+      &>.lay{
+        width: 150%;
+      }
+    }
+  }
+
   .body-offices{
     flex-direction: column-reverse;
     &-title{
