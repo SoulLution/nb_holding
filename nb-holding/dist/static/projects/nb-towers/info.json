@@ -1,0 +1,20 @@
+{
+	"name": "ЖК ”NB Towers”",
+	"min_price": "160.000тг",
+	"img": "index.jpg",
+	"status": "готов на 60%",
+	"ending": "2 квартал 2021",
+	"city": "г.Атырау",
+	"prezentatsia": {
+		"href": "/static/Prezentatsia.pdf",
+		"name": "ЖК “Grand Avenue”"
+	},
+	"pluses": [
+		"Закрытый двор-парк"
+	],
+	"prices": {
+		"1": {
+			"41,63": "160.000"
+		}
+	}
+}
