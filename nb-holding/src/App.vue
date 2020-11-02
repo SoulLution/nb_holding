@@ -200,20 +200,20 @@
       <div class="content flex-col items-start">
         <h2>Планировки</h2>
         <div class="flex-row flex-wrap w-2/3 justify-start items-start mt-16 m-0">
-          <div class="active m-0 mb-4 mr-16 w-auto whitespace-no-wrap cursor-pointer" :class="{'true': active.for_appartments === i}" :key="i" @click="changeForAppart(i)" v-for="(appartments, i) in projects" v-if="appartments.info.prices[1]">{{appartments.info.name}}</div>
+          <div class="active m-0 mb-4 mr-16 w-auto whitespace-no-wrap cursor-pointer" :class="{'true': active.for_appartments == i}" :key="i" @click="changeForAppart(i)" v-for="(appartments, i) in projects" v-if="appartments.info.prices[2]">{{appartments.info.name}}</div>
         </div>
         <div class="flex-row justify-start items-start mt-32">
           <div class="m-0" :class="{'w-0': key != active.rooms}" v-for="(project, key) in projects[active.for_appartments].info.prices" :key="key">
-            <img class="w-4/5" :src="'/static/projects/' + projects[active.for_appartments].folder + '/plans/block_' + key + '/' + size + '.png'" v-for="(price, size) in project" :key="size" v-show="key == active.rooms && size === active.size">
+            <img class="w-4/5" :src="'/static/projects/' + projects[active.for_appartments].folder + '/plans/block_' + key + '/' + size + '.png'" v-for="(price, size) in project" :key="size" v-if="key == active.rooms && size === active.size">
           </div>
           <div class="flex-col justify-start w-1/5">
-            <span>Комнаты</span>
-            <div class="flex-row justify-start">
-              <div class="active cursor-pointer w-auto p-4 m-0" :class="{'true': active.rooms === j}" v-for="j in 4" @click="changeRooms(j)" :key="j">{{j}}</div>
+            <span>{{projects[active.for_appartments].info.block_type}}</span>
+            <div class="flex-row justify-start flex-wrap" v-if="projects[active.for_appartments].info.prices[2]">
+              <div class="active cursor-pointer w-auto p-4 m-0" :class="{'true': active.rooms == key}" v-for="(j, key) in projects[active.for_appartments].info.prices" @click="changeRooms(key)" :key="key">{{key}}</div>
             </div>
             <span>Площадь</span>
             <div class="flex-row justify-start items-start flex-wrap">
-              <div class="active cursor-pointer w-1/2 p-4 m-0" :class="{'true': active.size === j}" :key="j" v-for="(item, j) in projects[active.for_appartments].info.prices[active.rooms]" @click="changeSize(j)">{{j}}</div>
+              <div class="active cursor-pointer w-1/2 py-4 px-2 m-0 whitespace-no-wrap" :class="{'true': active.size == j}" :key="j" v-for="(item, j) in projects[active.for_appartments].info.prices[active.rooms]" @click="changeSize(j)">{{j}}</div>
             </div>
             <button @click="openPopup(3)">Рассчитать<br>стоимость</button>
           </div>
@@ -573,6 +573,11 @@
         else
           this.prezentatsia = ''
         this.popup = type
+        let html = document.getElementsByTagName('html')[0]
+        if(type)
+          html.style.overflowY = 'hidden'
+        else
+          html.style.overflowY = 'scroll'
       },
       changeSize(index){
         this.active.size = index
@@ -583,7 +588,7 @@
       },
       changeForAppart(index){
         this.active.for_appartments = index
-        this.active.rooms = 1
+        this.active.rooms = Object.keys(this.projects[this.active.for_appartments].info.prices)[0]
         this.active.size = this.projects[this.active.for_appartments].info.prices[this.active.rooms].getFirstProperty()
       }
     }
